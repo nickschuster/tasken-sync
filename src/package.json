@@ -1,0 +1,24 @@
+{
+  "name": "tasken-sync",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build:prod": "bun build --compile --minify --sourcemap ./src/index.ts --outfile ./sync",
+    "start": "bun run ./src/index.ts",
+    "dev": "bun run --watch ./src/index.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.37.0",
+    "@types/bun": "^1.2.23",
+    "eslint": "^9.37.0",
+    "globals": "^16.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.3",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.45.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
