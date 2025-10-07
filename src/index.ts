@@ -6,6 +6,7 @@ type Message = {
 };
 
 const server = Bun.serve({
+  port: process.env.PORT ?? 3001,
   async fetch(req, server) {
     const upgraded = server.upgrade(req);
 
