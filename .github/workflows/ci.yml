@@ -33,12 +33,9 @@ jobs:
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
-          ls -la
           rsync -avz --delete ./sync $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 
           ssh $DEPLOY_USER@$DEPLOY_HOST "\
-            pwd && \
-            ls -la && \
             export NVM_DIR=~/.nvm && \
             source \$NVM_DIR/nvm.sh && \
             nvm use 22 && \
