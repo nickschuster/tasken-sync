@@ -35,7 +35,7 @@ jobs:
 
       - name: Deploy to DigitalOcean
         env:
-          DEPLOY_PATH: /home/$USER
+          DEPLOY_PATH: /$USER
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
