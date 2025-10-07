@@ -44,4 +44,4 @@ jobs:
             nvm use 22 && \
             npm install -g bun && \
             cd $DEPLOY_PATH && \
-            pm2 reload tasken-sync --update-env ||  pm2 start sync --name tasken-sync"
+            pm2 reload tasken-sync --update-env ||  pm2 start ./sync --name tasken-sync"
