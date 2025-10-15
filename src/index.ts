@@ -1,16 +1,26 @@
-const TASK_ROOM = "task_room";
+const AUTH_KEY = "auth-session";
 
 type Message = {
   event: string;
   payload: unknown;
 };
 
-const server = Bun.serve({
+const server = Bun.serve<{ authToken: string }, never>({
   port: process.env.PORT ?? 3001,
   async fetch(req, server) {
-    const upgraded = server.upgrade(req);
+    const cookies = new Bun.CookieMap(req.headers.get("cookie")!);
 
-    console.log("Init connection with:", server.requestIP(req));
+    const authToken = cookies.get(AUTH_KEY);
+
+    if (!authToken) {
+      return new Response("Unauthorized", { status: 400 });
+    }
+
+    const upgraded = server.upgrade(req, {
+      data: {
+        userToken: authToken,
+      },
+    });
 
     if (upgraded) return undefined;
   },
@@ -18,14 +28,14 @@ const server = Bun.serve({
     async open(ws) {
       console.log("Socket opened");
 
-      ws.subscribe(TASK_ROOM);
+      ws.subscribe(ws.data.authToken);
     },
     async close(ws) {
       console.log("Socket closed");
 
-      ws.unsubscribe(TASK_ROOM);
+      ws.unsubscribe(ws.data.authToken);
     },
-    async message(_, message) {
+    async message(ws, message) {
       console.log("Socket message received:", message);
 
       try {
@@ -41,7 +51,7 @@ const server = Bun.serve({
         );
       }
 
-      const status = server.publish(TASK_ROOM, `${message}`);
+      const status = ws.publish(ws.data.authToken, message);
 
       console.log("Socket message proccessed: ", status);
     },
