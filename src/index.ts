@@ -1,6 +1,6 @@
-import { SHA256, sql, SQL } from "bun";
+import { SQL } from "bun";
 import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeBase64url, encodeHexLowerCase } from "@oslojs/encoding";
+import { encodeHexLowerCase } from "@oslojs/encoding";
 
 const AUTH_KEY = "auth-session";
 
