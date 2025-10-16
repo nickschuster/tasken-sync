@@ -9,6 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -36,6 +39,7 @@ jobs:
           rsync -avz --delete ./sync $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 
           ssh $DEPLOY_USER@$DEPLOY_HOST "\
+            export DATABASE_URL='${{ secrets.DATABASE_URL }}'
             export NVM_DIR=~/.nvm && \
             source \$NVM_DIR/nvm.sh && \
             nvm use 22 && \
