@@ -39,6 +39,8 @@ const server = Bun.serve<{ userId: string }, never>({
       return new Response("Forbidden", { status: 400 });
     }
 
+    console.log("Connecting user:", session.user_id);
+
     const upgraded = server.upgrade(req, {
       data: {
         userId: session.user_id,
