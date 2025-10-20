@@ -50,6 +50,7 @@ const server = Bun.serve<{ userId: string }, never>({
     if (upgraded) return undefined;
   },
   websocket: {
+    idleTimeout: 60 * 5,
     async open(ws) {
       console.log("Socket opened");
 
@@ -64,7 +65,14 @@ const server = Bun.serve<{ userId: string }, never>({
       console.log("Socket message received:", message);
 
       try {
-        message = JSON.stringify(JSON.parse(message.toString()) as Message);
+        const data = JSON.parse(message.toString()) as Message;
+
+        message = JSON.stringify(data);
+
+        if (data.event === "socket:ping") {
+          ws.send(JSON.stringify({ event: "socket:pong" }));
+          return;
+        }
       } catch {
         message = JSON.stringify({
           payload: message.toString(),
